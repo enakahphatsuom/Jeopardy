@@ -27,6 +27,13 @@ let categories = [];
  */
 
 function getCategoryIds() {
+    let randomNumber = 0;
+    for (let i = 1; i <= 6; i++) {
+        randomNumber = Math.floor(Math.random() * 100);
+        console.log(randomNumber);
+
+        let url = 'https://jservice.io/api/category?id=' + randomNumber;
+    }
 }
 
 /** Return object with data about a category:
@@ -40,8 +47,19 @@ function getCategoryIds() {
  *      ...
  *   ]
  */
-
 function getCategory(catId) {
+    return fetch('https://jservice.io/api/category?id=' + catId)
+        .then(response => response.json())
+        .then(category => {
+            return {
+                title: category.title,
+                clues: category.clues.map(clue => ({
+                    question: clue.question,
+                    answer: clue.answer,
+                    showing: null
+                }))
+            };
+        });
 }
 
 /** Fill the HTML table#jeopardy with the categories & cells for questions.
@@ -53,6 +71,29 @@ function getCategory(catId) {
  */
 
 async function fillTable() {
+    const table = document.querySelector('#jeopardy');
+    const thead = document.createElement('thead');
+    const tbody = document.createElement('tbody');
+    const headerRow = document.createElement('tr');
+
+    categories.forEach(category => {
+        const th = document.createElement('th');
+        th.textContent = category.title;
+        headerRow.appendChild(th);
+    });
+    thead.append(headerRow);
+
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        categories.forEach(category => {
+            const td = document.createElement('td');
+            const clue = category.clues[i];
+            td.textContent = clue.showing === 'answer' ? clue.answer : '?';
+            td.addEventListener('click', handleClick);
+            row.appendChild(td);
+        });
+        tbody.appendChild(row);
+    }
 }
 
 /** Handle clicking on a clue: show the question or answer.
@@ -85,9 +126,22 @@ function hideLoadingView() {
  * - get data for each category
  * - create HTML table
  * */
-
 async function setupAndStart() {
+    // showLoadingView();
+    let randomNumber = 0;
+    categories = [];
+    for (let i = 1; i <= 6; i++) {
+        randomNumber = Math.floor(Math.random() * 100);
+        const category = await getCategory(randomNumber);
+        categories.push(category);
+        console.log(category);
+        console.log("---------------------------------------");
+    }
+    fillTable();
+
 }
+
+setupAndStart();
 
 /** On click of start / restart button, set up game. */
 
