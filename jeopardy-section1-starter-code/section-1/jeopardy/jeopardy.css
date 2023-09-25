@@ -5,3 +5,40 @@
   #8d2ab5
   #74119c
 */
+#jeopardy {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#jeopardy th, #jeopardy td {
+  padding: 10px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border: 2px sold #115ff4;
+  cursor: pointer;
+}
+
+#jeopardy td {
+  background-color: #060ce9;
+  color: #fff;
+}
+
+#jeopardy td:hover {
+  background-color:  #74119c;
+  color: #fff;
+}
+
+#start-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #8d2ab5;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

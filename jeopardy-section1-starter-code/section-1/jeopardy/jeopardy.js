@@ -30,7 +30,6 @@ function getCategoryIds() {
     let randomNumber = 0;
     for (let i = 1; i <= 6; i++) {
         randomNumber = Math.floor(Math.random() * 100);
-        console.log(randomNumber);
 
         let url = 'https://jservice.io/api/category?id=' + randomNumber;
     }
@@ -75,6 +74,7 @@ async function fillTable() {
     const thead = document.createElement('thead');
     const tbody = document.createElement('tbody');
     const headerRow = document.createElement('tr');
+    const NUMBER_OF_ROWS = 5;
 
     categories.forEach(category => {
         const th = document.createElement('th');
@@ -83,12 +83,11 @@ async function fillTable() {
     });
     thead.append(headerRow);
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < NUMBER_OF_ROWS; i++) {
         const row = document.createElement('tr');
         categories.forEach(category => {
             const td = document.createElement('td');
             const clue = category.clues[i];
-            console.log(clue);
             if (clue) {
                 td.textContent = clue.showing === 'answer' ? clue.answer : '?';
             }
@@ -117,7 +116,7 @@ function handleClick(evt) {
     const row = cell.parentNode;
     const colIndex = Array.from(row.children).indexOf(cell);
     const category = categories[colIndex];
-    const clue = category.clue[row.rowIndex];
+    const clue = category.clues[row.rowIndex];
 
     if (!clue.showing) {
         cell.textContent = clue.question;
@@ -158,7 +157,6 @@ async function setupAndStart() {
         categories.push(category);
     }
     fillTable();
-
 }
 
 
