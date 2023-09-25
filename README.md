@@ -6,3 +6,5 @@
 09/05/23- 2h- not moving from yesterday's task.
 09/16/23 - 3h- try to append and make the handleclick work
 09/17/23 - 3h - work on the handelclick and try to update the button.
+09/23/23-  4h-to fixes errores from consol
+09/24/23- 3h- try somme css for the jeopardy table

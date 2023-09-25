@@ -88,12 +88,20 @@ async function fillTable() {
         categories.forEach(category => {
             const td = document.createElement('td');
             const clue = category.clues[i];
-            td.textContent = clue.showing === 'answer' ? clue.answer : '?';
+            console.log(clue);
+            if (clue) {
+                td.textContent = clue.showing === 'answer' ? clue.answer : '?';
+            }
+
             td.addEventListener('click', handleClick);
             row.appendChild(td);
         });
         tbody.appendChild(row);
     }
+
+    table.innerHTML = '';
+    table.appendChild(thead);
+    table.appendChild(tbody);
 }
 
 /** Handle clicking on a clue: show the question or answer.
@@ -105,6 +113,20 @@ async function fillTable() {
  * */
 
 function handleClick(evt) {
+    const cell = evt.target;
+    const row = cell.parentNode;
+    const colIndex = Array.from(row.children).indexOf(cell);
+    const category = categories[colIndex];
+    const clue = category.clue[row.rowIndex];
+
+    if (!clue.showing) {
+        cell.textContent = clue.question;
+        clue.showing = 'question';
+    } else if (clue.showing === 'question') {
+        cell.textContent = clue.answer;
+        clue.showing = 'answer';
+    }
+
 }
 
 /** Wipe the current Jeopardy board, show the loading spinner,
@@ -134,19 +156,15 @@ async function setupAndStart() {
         randomNumber = Math.floor(Math.random() * 100);
         const category = await getCategory(randomNumber);
         categories.push(category);
-        console.log(category);
-        console.log("---------------------------------------");
     }
     fillTable();
 
 }
 
+
+document.querySelector('#start-button').addEventListener('click', setupAndStart);
+document.querySelectorAll('#jeopardy td').forEach(cell => {
+    cell.addEventListener('click', handleClick);
+});
+
 setupAndStart();
-
-/** On click of start / restart button, set up game. */
-
-// TODO
-
-/** On page load, add event handler for clicking clues */
-
-// TODO
